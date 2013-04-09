@@ -1,4 +1,4 @@
-pylibssh2 (1.0.3) unstable; urgency=low
+pylibssh2 (1.0.3-cyos1) unstable; urgency=low
 
   * src/channel.c, libssh2/channel.py:
     - Add support for non blocking mode
