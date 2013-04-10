@@ -586,6 +586,35 @@ PYLIBSSH2_Channel_send_eof(PYLIBSSH2_CHANNEL *self, PyObject *args)
 }
 /* }}} */
 
+/* {{{ PYLIBSSH2_Channel_wait_eof
+ */
+static char PYLIBSSH2_Channel_wait_eof_doc[] = "\n\
+wait_eof() -> int\n\
+\n\
+waits on EOF status on the channel to remote server.\n\
+\n\
+@return 0 on success or negative on failure\n\
+@rtype  int";
+
+static PyObject *
+PYLIBSSH2_Channel_wait_eof(PYLIBSSH2_CHANNEL *self, PyObject *args)
+{
+    int rc;
+
+    Py_BEGIN_ALLOW_THREADS
+    rc = libssh2_channel_wait_eof(self->channel);
+    Py_END_ALLOW_THREADS
+
+    if (rc == -1) {
+        /* CLEAN: PYLIBSSH2_CANT_SEND_EOF_MSG */
+        PyErr_SetString(PYLIBSSH2_Error, "Unable to send a EOF on channel.");
+        return NULL;
+    }
+
+    return Py_BuildValue("i", rc);
+}
+/* }}} */
+
 /* {{{ PYLIBSSH2_Channel_wait_closed
  */
 static char PYLIBSSH2_Channel_wait_closed_doc[] = "\n\
@@ -762,6 +791,7 @@ static PyMethodDef PYLIBSSH2_Channel_methods[] =
     ADD_METHOD(eof),
     ADD_METHOD(exit_status),
     ADD_METHOD(send_eof),
+    ADD_METHOD(wait_eof),
     ADD_METHOD(wait_closed),
     ADD_METHOD(window_read),
     ADD_METHOD(window_write),
