@@ -202,6 +202,15 @@ class Channel(object):
         """
         self._channel.send_eof()
 
+    def wait_eof(self):
+        """
+        waits on EOF status on the channel to remote server.
+
+        @return: 0 on success or negative on failure
+        @rtype: int
+        """
+        self._channel.wait_eof()
+
     def setblocking(self, mode=1):
         """
         Sets blocking mode on the channel. Default mode is blocking.
